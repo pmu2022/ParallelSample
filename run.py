@@ -11,6 +11,11 @@ try:
 except IndexError:
     duration = 10000
 
+try:
+    jobs = sys.argv[2]
+except IndexError:
+    jobs = 8
+
 
 def run_subprocess():
     print('START')
@@ -19,7 +24,7 @@ def run_subprocess():
 
 
 if __name__ == '__main__':
-    with joblib.Parallel(n_jobs=6, verbose=VERBOSITY) as parallel:
-        jobs = [delayed(run_subprocess)() for i in range(6)]
+    with joblib.Parallel(n_jobs=jobs, verbose=VERBOSITY) as parallel:
+        parallel_jobs = [delayed(run_subprocess)() for i in range(6)]
 
-        parallel(jobs)
+        parallel(parallel_jobs)

@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+#SBATCH --job-name=tests
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=48
+#SBATCH --ntasks-per-core=1
+#SBATCH --exclusive
+#SBATCH --mail-type=END
+#SBATCH --begin=now
+#SBATCH --output=output-%j.out
+#SBATCH --error=error-%j.out
+#SBATCH --mail-user=franco.moitzi@mcl.at
+#SBATCH --verbose
+
+
+module purge
+module load gcc
+
+source /home/fs70372/fmoitzi/VirtualEnvs/adamant-dev/bin/activate
+
+echo $(date)
+python run.py 60000 48
+echo $(date)
