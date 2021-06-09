@@ -10,6 +10,7 @@
 #SBATCH --output=output-%j.out
 #SBATCH --error=error-%j.out
 #SBATCH --mail-user=franco.moitzi@mcl.at
+#SBATCH --time=01:00:00
 #SBATCH --verbose
 
 
@@ -19,5 +20,5 @@ module load gcc
 source /home/fs70372/fmoitzi/VirtualEnvs/adamant-dev/bin/activate
 
 echo $(date)
-python run.py 60000 48
+python run.py 600000 48
 echo $(date)
