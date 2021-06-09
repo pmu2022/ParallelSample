@@ -7,12 +7,12 @@ from joblib import delayed
 VERBOSITY = 100000
 
 try:
-    duration = sys.argv[1]
+    duration = int(sys.argv[1])
 except IndexError:
     duration = 10000
 
 try:
-    jobs = sys.argv[2]
+    jobs = int(sys.argv[2])
 except IndexError:
     jobs = 8
 
