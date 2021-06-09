@@ -1,3 +1,4 @@
+import inspect
 import subprocess
 import sys
 
@@ -18,13 +19,29 @@ except IndexError:
 
 
 def run_subprocess():
-    print('START')
+    name = inspect.stack()[0][3]
+    print(f'START: {name}')
     subprocess.run(['./sample', str(duration)])
-    print('END')
+    print(f'END: {name}')
+
+
+def run_parallel_subprocess(number):
+    name = inspect.stack()[0][3]
+    print(f'START: {name}')
+    subprocess.run(['mpirun', '-n', str(number), './sample', str(duration)])
+    print(f'END: {name}')
 
 
 if __name__ == '__main__':
     with joblib.Parallel(n_jobs=jobs, verbose=VERBOSITY) as parallel:
-        parallel_jobs = [delayed(run_subprocess)() for i in range(6)]
+        parallel_jobs = [delayed(run_subprocess)() for i in range(jobs)]
+
+        parallel(parallel_jobs)
+
+    jobs = jobs // 2
+
+    with joblib.Parallel(n_jobs=jobs, verbose=VERBOSITY) as parallel:
+        parallel_jobs = [delayed(run_parallel_subprocess)(2) for i in range(
+            jobs)]
 
         parallel(parallel_jobs)

@@ -4,11 +4,39 @@
 #include <chrono>
 #include <iostream>
 #include <vector>
+
+#ifdef PARALLEL
+#include <mpi.h>
+#endif
+
 using namespace std;
 using namespace std::chrono;
 
 int main(int argc, char** argv)
 {
+
+#ifdef PARALLEL
+    MPI_Init(NULL, NULL);
+
+    int world_size;
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
+    // Get the rank of the process
+    int world_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+
+    // Get the name of the processor
+    char processor_name[MPI_MAX_PROCESSOR_NAME];
+    int name_len;
+    MPI_Get_processor_name(processor_name, &name_len);
+
+    cout << processor_name << " ";
+    cout << world_size << " ";
+    cout << world_rank << endl;
+#endif
+
+
+
     auto default_duration = 5000;
 
     if (argc >= 2) {
@@ -40,6 +68,10 @@ int main(int argc, char** argv)
         duration = duration_cast<milliseconds>(stop - start);
 
     }
+
+#ifdef PARALLEL
+    MPI_Finalize();
+#endif
 
     return 0;
 }
