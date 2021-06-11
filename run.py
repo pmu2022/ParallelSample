@@ -36,7 +36,8 @@ def run_parallel_subprocess(number):
 
 if __name__ == '__main__':
     nr_cpu_logical = psutil.cpu_count(logical=True)
-    print(f'CPU (including logical): {nr_cpu_logical:4d}')
+    print(f'CPU (including logical): '
+          f'{nr_cpu_logical:4d}')
 
     nr_cpu_non_logical = psutil.cpu_count(logical=False)
     print(f'CPU (only physical):     '
