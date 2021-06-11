@@ -44,9 +44,12 @@ if __name__ == '__main__':
 
     sched_affinity = len(os.sched_getaffinity(0))
     print(f'CPU (affinity):         '
-          f'{sched_affinity}        ')
+          f'{sched_affinity:4d}')
 
     jobs = jobs // 2
+
+    print(f'Jobs (specified):       '
+          f'{jobs:4d}')
 
     with joblib.Parallel(n_jobs=jobs, verbose=VERBOSITY) as parallel:
         parallel_jobs = [delayed(run_parallel_subprocess)(2) for i in range(
