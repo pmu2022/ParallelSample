@@ -33,10 +33,12 @@ def run_parallel_subprocess(number):
 
 
 if __name__ == '__main__':
-    with joblib.Parallel(n_jobs=jobs, verbose=VERBOSITY) as parallel:
-        parallel_jobs = [delayed(run_subprocess)() for i in range(jobs)]
-
-        parallel(parallel_jobs)
+    #
+    # with joblib.Parallel(n_jobs=jobs, verbose=VERBOSITY) as parallel:
+    #     parallel_jobs = [delayed(run_subprocess)() for i in range(jobs)]
+    #
+    #    parallel(parallel_jobs)
+    #
 
     jobs = jobs // 2
 
