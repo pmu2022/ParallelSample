@@ -1,6 +1,8 @@
 import inspect
 import subprocess
 import sys
+import psutil
+import os
 
 import joblib
 from joblib import delayed
@@ -33,6 +35,17 @@ def run_parallel_subprocess(number):
 
 
 if __name__ == '__main__':
+    nr_cpu_logical = psutil.cpu_count(logical=True)
+    print(f'CPU (including logical): {nr_cpu_logical:4d}')
+
+    nr_cpu_non_logical = psutil.cpu_count(logical=False)
+    print(f'CPU (only physical):     '
+          f'{nr_cpu_non_logical:4d}')
+
+    sched_affinity = len(os.sched_getaffinity(0))
+    print(f'CPU (affinity):         '
+          f'{sched_affinity}        ')
+
     jobs = jobs // 2
 
     with joblib.Parallel(n_jobs=jobs, verbose=VERBOSITY) as parallel:
