@@ -15,13 +15,13 @@ sample: sample.o
 	$(CXX) $^ -o $@
 
 sample.o: sample.cpp
-	$(CXX) -c $^ -o $@
+	$(CXX) -std=c++11 -c $^ -o $@
 
 mpi_sample: mpi_sample.o
 	$(MPICXX) $^ -o $@
 
 mpi_sample.o: sample.cpp
-	$(MPICXX) -DPARALLEL -c $^ -o $@
+	$(MPICXX) -std=c++11 -DPARALLEL -c $^ -o $@
 
 clean:
 	rm -rf *.o mpi_sample sample
