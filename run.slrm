@@ -1,27 +1,38 @@
 #!/bin/bash
 #
-#SBATCH --job-name=tests
+#SBATCH --job-name=nk221-X
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=48
+#SBATCH --ntasks=128
+#SBATCH --ntasks-per-node=128
 #SBATCH --ntasks-per-core=1
 #SBATCH --exclusive
-#SBATCH --mail-type=END
+#SBATCH --mail-type=FAIL
 #SBATCH --begin=now
+#SBATCH --time=00:10:00
 #SBATCH --output=output-%j.out
 #SBATCH --error=error-%j.out
 #SBATCH --mail-user=franco.moitzi@mcl.at
-#SBATCH --time=01:00:00
 #SBATCH --verbose
+#SBATCH --partition=zen3_0512
+#SBATCH --qos zen3_0512_devel
 
+ulimit -S -s unlimited
 
 module purge
-module load intel/19
-module load intel-mpi/2019
-module load intel-mkl/2019
+module load intel-oneapi-compilers/2022.2.1-gcc-12.2.0-56q5kyk
+module load intel-oneapi-mkl/2022.2.1-gcc-12.2.0-q674ulo
+module load python/3.11.0-gcc-12.2.0-4cmli4d
 
+export I_MPI_PIN_PROCESSOR_LIST=0-127
+export I_MPI_PIN=0
+export I_MPI_PIN_RESPECT_CPUSET=0
+export SLURM_STEP_GRES=none
+
+export PATH="$PATH:/home/fs70372/fmoitzi/Software/emto/build_inteloneapi/bin"
+export PATH="$PATH:/gpfs/data/fs70372/fmoitzi/Software/MatCalc_6.05"
 
 source /home/fs70372/fmoitzi/VirtualEnvs/adamant-dev/bin/activate
 
-echo $(date)
-python run.py 600000 48
-echo $(date)
+python run.py 600000 128
+
+
